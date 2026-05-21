@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ducati Korea</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:#000;
+            color:#fff;
+            font-family:'Arial', sans-serif;
+            overflow-x:hidden;
+        }
+
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
+
+        ul{
+            list-style:none;
+        }
+
+        img{
+            width:100%;
+            display:block;
+        }
+
+        .container{
+            width:100%;
+            max-width:1400px;
+            margin:0 auto;
+            padding:0 40px;
+        }
+
+        /* HEADER */
+
+        header{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            z-index:1000;
+            background:rgba(0,0,0,0.45);
+            backdrop-filter:blur(10px);
+            border-bottom:1px solid rgba(255,255,255,0.08);
+        }
+
+        .header-inner{
+            height:80px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            font-size:24px;
+            font-weight:700;
+        }
+
+        .logo img{
+            width:44px;
+        }
+
+        nav ul{
+            display:flex;
+            gap:48px;
+            font-size:14px;
+            font-weight:600;
+        }
+
+        nav li{
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        nav li:hover{
+            color:#ff0000;
+        }
+
+        .header-icons{
+            display:flex;
+            gap:24px;
+            font-size:22px;
+            cursor:pointer;
+        }
+
+        /* HERO */
+
+        .hero{
+            position:relative;
+            height:100vh;
+            overflow:hidden;
+        }
+
+        .hero-slider{
+            height:100%;
+            position:relative;
+        }
+
+        .hero-slide{
+            position:absolute;
+            width:100%;
+            height:100%;
+            top:0;
+            left:0;
+            opacity:0;
+            transition:1s;
+        }
+
+        .hero-slide.active{
+            opacity:1;
+            z-index:1;
+        }
+
+        .hero-slide img{
+            height:100%;
+            object-fit:cover;
+        }
+
+        .hero-overlay{
+            position:absolute;
+            inset:0;
+            background:linear-gradient(
+                    to bottom,
+                    rgba(0,0,0,0.3),
+                    rgba(0,0,0,0.65)
+            );
+            z-index:2;
+        }
+
+        .play-button{
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+            width:90px;
+            height:90px;
+            border-radius:50%;
+            border:4px solid #fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            z-index:3;
+            transition:0.3s;
+        }
+
+        .play-button:hover{
+            transform:translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button::before{
+            content:'▶';
+            font-size:30px;
+            margin-left:6px;
+        }
+
+        .hero-controls{
+            position:absolute;
+            bottom:50px;
+            left:50%;
+            transform:translateX(-50%);
+            display:flex;
+            gap:12px;
+            z-index:3;
+        }
+
+        .dot{
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:rgba(255,255,255,0.4);
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .dot.active{
+            background:#ff0000;
+            transform:scale(1.2);
+        }
+
+        /* SECTION */
+
+        section{
+            padding:120px 0;
+        }
+
+        .section-title{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:50px;
+        }
+
+        .section-title h2{
+            font-size:52px;
+            color:#ff0000;
+            font-weight:800;
+            text-transform:uppercase;
+        }
+
+        .section-title a{
+            font-size:14px;
+            opacity:0.7;
+            transition:0.3s;
+        }
+
+        .section-title a:hover{
+            color:#ff0000;
+        }
+
+        /* MODEL */
+
+        .model-wrap{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            align-items:center;
+            gap:80px;
+        }
+
+        .model-info h3{
+            font-size:18px;
+            color:#ff0000;
+            margin-bottom:12px;
+        }
+
+        .model-info h1{
+            font-size:82px;
+            line-height:0.95;
+            margin-bottom:40px;
+            text-transform:uppercase;
+        }
+
+        .spec{
+            display:flex;
+            justify-content:space-between;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            padding:14px 0;
+            font-size:15px;
+            opacity:0.9;
+        }
+
+        .model-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            width:180px;
+            height:56px;
+            background:#ff0000;
+            margin-top:40px;
+            font-weight:700;
+            transition:0.3s;
+        }
+
+        .model-btn:hover{
+            background:#c70000;
+        }
+
+        .model-image{
+            position:relative;
+        }
+
+        .model-image img{
+            transition:0.5s;
+        }
+
+        .model-image:hover img{
+            transform:scale(1.03);
+        }
+
+        .price{
+            margin-top:24px;
+            font-size:28px;
+            text-align:center;
+        }
+
+        /* PROMOTION SLIDER */
+
+        .promo-slider{
+            position:relative;
+            overflow:hidden;
+            border-radius:20px;
+        }
+
+        .promo-track{
+            display:flex;
+            transition:0.5s;
+        }
+
+        .promo-slide{
+            min-width:100%;
+            position:relative;
+        }
+
+        .promo-slide img{
+            height:500px;
+            object-fit:cover;
+        }
+
+        .promo-content{
+            position:absolute;
+            left:80px;
+            top:50%;
+            transform:translateY(-50%);
+            z-index:2;
+        }
+
+        .promo-content h3{
+            color:#ff0000;
+            margin-bottom:14px;
+        }
+
+        .promo-content h1{
+            font-size:64px;
+            margin-bottom:20px;
+        }
+
+        .promo-btn{
+            display:inline-block;
+            border:1px solid #fff;
+            padding:14px 32px;
+            transition:0.3s;
+        }
+
+        .promo-btn:hover{
+            background:#fff;
+            color:#000;
+        }
+
+        .slider-arrow{
+            position:absolute;
+            top:50%;
+            transform:translateY(-50%);
+            width:60px;
+            height:60px;
+            border-radius:50%;
+            background:#ff0000;
+            border:none;
+            color:#fff;
+            font-size:24px;
+            cursor:pointer;
+            z-index:5;
+        }
+
+        .slider-arrow.prev{
+            left:30px;
+        }
+
+        .slider-arrow.next{
+            right:30px;
+        }
+
+        /* EXPERIENCE */
+
+        .card-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:28px;
+        }
+
+        .card{
+            background:#111;
+            overflow:hidden;
+            cursor:pointer;
+            transition:0.4s;
+        }
+
+        .card:hover{
+            transform:translateY(-10px);
+        }
+
+        .card img{
+            height:240px;
+            object-fit:cover;
+        }
+
+        .card-content{
+            padding:24px;
+        }
+
+        .card-content h3{
+            margin-bottom:10px;
+            font-size:22px;
+        }
+
+        .card-content p{
+            opacity:0.7;
+            line-height:1.6;
+        }
+
+        /* NEWS */
+
+        .news-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:30px;
+        }
+
+        .news-card{
+            position:relative;
+            overflow:hidden;
+        }
+
+        .news-card img{
+            height:420px;
+            object-fit:cover;
+            transition:0.5s;
+        }
+
+        .news-card:hover img{
+            transform:scale(1.08);
+        }
+
+        .news-overlay{
+            position:absolute;
+            inset:0;
+            background:linear-gradient(
+                    to top,
+                    rgba(0,0,0,0.9),
+                    transparent
+            );
+        }
+
+        .news-content{
+            position:absolute;
+            left:40px;
+            bottom:40px;
+            z-index:2;
+        }
+
+        .news-content h3{
+            font-size:28px;
+            margin-bottom:12px;
+        }
+
+        .news-content p{
+            opacity:0.7;
+            max-width:500px;
+        }
+
+        /* FOOTER */
+
+        footer{
+            border-top:1px solid rgba(255,255,255,0.08);
+            padding:80px 0;
+            text-align:center;
+        }
+
+        .footer-logo{
+            width:70px;
+            margin:0 auto 30px;
+        }
+
+        .footer-text{
+            opacity:0.6;
+            line-height:1.8;
+            font-size:14px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:1024px){
+
+            nav{
+                display:none;
+            }
+
+            .model-wrap{
+                grid-template-columns:1fr;
+            }
+
+            .card-grid{
+                grid-template-columns:1fr;
+            }
+
+            .news-grid{
+                grid-template-columns:1fr;
+            }
+
+            .promo-content h1{
+                font-size:40px;
+            }
+
+            .model-info h1{
+                font-size:54px;
+            }
+        }
+
+        @media(max-width:768px){
+
+            .container{
+                padding:0 20px;
+            }
+
+            .section-title h2{
+                font-size:36px;
+            }
+
+            .promo-content{
+                left:30px;
+            }
+
+            .promo-content h1{
+                font-size:30px;
+            }
+
+            .promo-slide img{
+                height:400px;
+            }
+
+            .hero{
+                height:85vh;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+    <div class="container header-inner">
+
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Ducati_red_logo.PNG" alt="">
+            <span>Ducati Korea</span>
+        </div>
+
+        <nav>
+            <ul>
+                <li>브랜드</li>
+                <li>모터사이클</li>
+                <li>라이프스타일</li>
+                <li>커뮤니티</li>
+                <li>구매 & 상담</li>
+            </ul>
+        </nav>
+
+        <div class="header-icons">
+            <span>⌕</span>
+            <span>☰</span>
+        </div>
+
+    </div>
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-slider">
+
+        <div class="hero-slide active">
+            <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2070&auto=format&fit=crop" alt="">
+        </div>
+
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1517846693594-1567da72af75?q=80&w=2070&auto=format&fit=crop" alt="">
+        </div>
+
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop" alt="">
+        </div>
+
+    </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="play-button"></div>
+
+    <div class="hero-controls">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+</section>
+
+<!-- MODEL -->
+
+<section>
+
+    <div class="container">
+
+        <div class="section-title">
+            <h2>Model</h2>
+            <a href="#">ALL MODELS →</a>
+        </div>
+
+        <div class="model-wrap">
+
+            <div class="model-info">
+
+                <h3>대표 모델</h3>
+                <h1>PANIGALE<br>V4S</h1>
+
+                <div class="spec">
+                    <span>배기량</span>
+                    <span>1103cc</span>
+                </div>
+
+                <div class="spec">
+                    <span>출력</span>
+                    <span>216hp</span>
+                </div>
+
+                <div class="spec">
+                    <span>토크</span>
+                    <span>12.4kgm</span>
+                </div>
+
+                <div class="spec">
+                    <span>시트고</span>
+                    <span>850mm</span>
+                </div>
+
+                <a href="#" class="model-btn">
+                    모델 알아보기 →
+                </a>
+
+            </div>
+
+            <div class="model-image">
+                <img src="https://images.ctfassets.net/x7j9qwvpvr5s/3uEU4Mpcv5mivvK5N7mJ1e/734ba9075c2d69dc6a0c5d8eb2d287f8/Panigale-V4-S-MY25-Model-Blocks-630x390.png" alt="">
+                <div class="price">₩ 61,000,000 ~</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- PROMOTION -->
+
+<section>
+
+    <div class="container">
+
+        <div class="promo-slider">
+
+            <button class="slider-arrow prev">‹</button>
+            <button class="slider-arrow next">›</button>
+
+            <div class="promo-track">
+
+                <div class="promo-slide">
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=2070&auto=format&fit=crop" alt="">
+
+                    <div class="promo-content">
+                        <h3>Promotion</h3>
+                        <h1>5월 MOTORCYCLE<br>PROMOTION</h1>
+
+                        <a href="#" class="promo-btn">
+                            자세히 보기
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="promo-slide">
+                    <img src="https://images.unsplash.com/photo-1517846693594-1567da72af75?q=80&w=2070&auto=format&fit=crop" alt="">
+
+                    <div class="promo-content">
+                        <h3>Special Event</h3>
+                        <h1>TRACK DAY<br>EXPERIENCE</h1>
+
+                        <a href="#" class="promo-btn">
+                            참가 신청
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="promo-slide">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop" alt="">
+
+                    <div class="promo-content">
+                        <h3>Riding Academy</h3>
+                        <h1>RIDE LIKE<br>A PRO</h1>
+
+                        <a href="#" class="promo-btn">
+                            더 알아보기
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- EXPERIENCE -->
+
+<section>
+
+    <div class="container">
+
+        <div class="section-title">
+            <h2>DUCATI EXPERIENCE</h2>
+        </div>
+
+        <div class="card-grid">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1200&auto=format&fit=crop" alt="">
+                <div class="card-content">
+                    <h3>Ducati Track Day</h3>
+                    <p>트랙에서 느끼는 두카티의 퍼포먼스</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517846693594-1567da72af75?q=80&w=1200&auto=format&fit=crop" alt="">
+                <div class="card-content">
+                    <h3>DRE Riding Academy</h3>
+                    <p>모든 라이더를 위한 체계적인 교육</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop" alt="">
+                <div class="card-content">
+                    <h3>We Ride As One</h3>
+                    <p>전세계 두카티 라이더들과 함께</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- NEWS -->
+
+<section>
+
+    <div class="container">
+
+        <div class="section-title">
+            <h2>NEWS / SNS</h2>
+        </div>
+
+        <div class="news-grid">
+
+            <div class="news-card">
+
+                <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1200&auto=format&fit=crop" alt="">
+
+                <div class="news-overlay"></div>
+
+                <div class="news-content">
+                    <h3>Corporate Partners</h3>
+                    <p>
+                        두카티와 함께한 다양한 브랜드 콜라보레이션
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="news-card">
+
+                <img src="https://images.unsplash.com/photo-1517846693594-1567da72af75?q=80&w=1200&auto=format&fit=crop" alt="">
+
+                <div class="news-overlay"></div>
+
+                <div class="news-content">
+                    <h3>World Ducati Week 2026</h3>
+                    <p>
+                        월드 두카티 위크 2026 현장 스케치
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="container">
+
+        <img
+                class="footer-logo"
+                src="https://upload.wikimedia.org/wikipedia/commons/6/66/Ducati_red_logo.PNG"
+                alt=""
+        >
+
+        <div class="footer-text">
+            DUCATI KOREA 대표 : LEE TAE HEUNG PABLO<br>
+            서울시 성동구 천호대로 372<br><br>
+            © 2026 DUCATI KOREA. ALL RIGHTS RESERVED.
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- SCRIPT -->
+
+<script>
+
+    /* HERO SLIDER */
+
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.dot');
+
+    let currentHero = 0;
+
+    function showHero(index){
+
+        heroSlides.forEach(slide=>{
+            slide.classList.remove('active');
+        });
+
+        heroDots.forEach(dot=>{
+            dot.classList.remove('active');
+        });
+
+        heroSlides[index].classList.add('active');
+        heroDots[index].classList.add('active');
+
+        currentHero = index;
+    }
+
+    heroDots.forEach((dot,index)=>{
+        dot.addEventListener('click',()=>{
+            showHero(index);
+        });
+    });
+
+    setInterval(()=>{
+        currentHero++;
+
+        if(currentHero >= heroSlides.length){
+            currentHero = 0;
+        }
+
+        showHero(currentHero);
+
+    },5000);
+
+
+    /* PROMO SLIDER */
+
+    const track = document.querySelector('.promo-track');
+    const slides = document.querySelectorAll('.promo-slide');
+
+    const nextBtn = document.querySelector('.next');
+    const prevBtn = document.querySelector('.prev');
+
+    let currentSlide = 0;
+
+    function updateSlider(){
+        track.style.transform =
+            `translateX(-${currentSlide * 100}%)`;
+    }
+
+    nextBtn.addEventListener('click',()=>{
+
+        currentSlide++;
+
+        if(currentSlide >= slides.length){
+            currentSlide = 0;
+        }
+
+        updateSlider();
+
+    });
+
+    prevBtn.addEventListener('click',()=>{
+
+        currentSlide--;
+
+        if(currentSlide < 0){
+            currentSlide = slides.length - 1;
+        }
+
+        updateSlider();
+
+    });
+
+    setInterval(()=>{
+
+        currentSlide++;
+
+        if(currentSlide >= slides.length){
+            currentSlide = 0;
+        }
+
+        updateSlider();
+
+    },6000);
+
+</script>
+
+</body>
+</html>

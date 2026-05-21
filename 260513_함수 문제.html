@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>함수 문제</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    // marks 에 있는 value들 (점수들)의 평균을 return 하세요
+    function get_average(marks){
+        let 국어점수 = marks['국어']
+        let 영어점수 = marks['영어']
+        let 수학점수 = marks['수학']
+        let 평균 = 국어점수 + 영어점수 + 수학점수 / 3;
+        return 평균;
+    }
+    marks = {'국어': 90, '영어': 80, '수학': 85}
+    average = get_average(marks);
+    console.log(`평균은 ${average}점입니다`)
+
+    let sum = 0;
+    let sum2 = 0;
+    for(let key in marks){
+        let value = marks[key];
+        sum += 1;
+    }
+    console.log(sum / sum2);
+
+    ////////////////////////////////////////////////////////////////
+    // 700원짜리 음료수를 몇 개 뽑을 수 있는지 모든 경우의 수 출력하기
+    function vending_machine(잔돈){
+        let 음료수 = 0;
+        let 갯수 = 0;
+        let 남는돈 = 0;
+        for(let i = 0; i < 5; i++){
+            console.log('음료수 =', 음료수 + 갯수, '개','잔돈 =', 잔돈 - 남는돈,'원');
+            갯수 += 1; // 갯수 = 갯수 + 1;
+            남는돈 += 700;
+        }
+    }
+    vending_machine(3000);
+    // 음료수 = 0개, 잔돈 = 3000원
+    // 음료수 = 1개, 잔돈 = 2300원
+    // 음료수 = 2개, 잔돈 = 1600
+    // 음료수 = 3개, 잔돈 = 900원
+    // 음료수 = 4개, 잔돈 = 200원
+</script>
